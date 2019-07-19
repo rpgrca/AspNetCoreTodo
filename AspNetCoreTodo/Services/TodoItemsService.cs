@@ -21,7 +21,7 @@ namespace AspNetCoreTodo.Services {
         public async Task<bool> AddItemAsync(TodoItem newItem) {
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
-            newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+            newItem.DueAt = DateTimeOffset.Now.AddDays(3); // TODO: Agregar fecha opcional
             
             _context.Items.Add(newItem);
 
