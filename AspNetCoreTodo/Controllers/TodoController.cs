@@ -22,5 +22,20 @@ namespace AspNetCoreTodo.Controllers {
         public TodoController(ITodoItemService todoItemService) {
             _todoItemService = todoItemService;
         }
+
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(TodoItem newItem) {
+            // Si el title viene vacio aunque este requerido por TodoItem
+            if (!ModelState.IsValid) {
+                return RedirectToAction("Index");
+            }
+
+            var successful = await _todoItemService.AddItemAsync(newItem);
+            if (! successful) {
+                return BadRequest("Could not add item.");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
