@@ -3,5 +3,7 @@
 <form method="POST" asp-action="AddItem">
     <label asp-for="Title">Add a new item:</label>
     <input asp-for="Title" type="text">
+    <label asp-for="DueAt">Due At</label>
+    <input asp-for="DueAt" type="date">
     <button type="submit">Add</button>
 </form>
