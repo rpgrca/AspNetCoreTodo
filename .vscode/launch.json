@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/AspNetCoreTodo/AspNetCoreTodo/bin/Debug/netcoreapp2.1/AspNetCoreTodo.dll",
+            "program": "${workspaceFolder}/AspNetCoreTodo/bin/Debug/netcoreapp2.1/AspNetCoreTodo.dll",
             "args": [],
             "cwd": "${workspaceFolder}/AspNetCoreTodo/AspNetCoreTodo",
             "stopAtEntry": false,

@@ -3,7 +3,9 @@
 
 // Write your JavaScript code.
 $(document).ready(function () {
-
+    $('.done-checkbox').on('click', function(e) {
+        markCompleted(e.target);
+    })
 })
 
 function markCompleted(checkbox) {
