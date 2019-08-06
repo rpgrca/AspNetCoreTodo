@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using AspNetCoreTodo.Models;
 using AspNetCoreTodo.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using AspNetCoreTodo.Controllers;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreTodo.Controllers {
+    [Authorize]
     public class TodoController : Controller {
         private readonly ITodoItemService _todoItemService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public async Task<IActionResult> Index() {
             var items = await _todoItemService.GetIncompleteItemsAsync();
@@ -19,8 +23,9 @@ namespace AspNetCoreTodo.Controllers {
             return View(model);
         }
 
-        public TodoController(ITodoItemService todoItemService) {
+        public TodoController(ITodoItemService todoItemService, UserManager<ApplicationUser> userManager) {
             _todoItemService = todoItemService;
+            _userManager = userManager;
         }
 
         [ValidateAntiForgeryToken]
