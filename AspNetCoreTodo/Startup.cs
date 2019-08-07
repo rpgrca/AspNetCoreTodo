@@ -41,7 +41,7 @@ namespace AspNetCoreTodo
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser,IdentityRole>()
-                //.AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
