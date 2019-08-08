@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreTodo.Controllers {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Constants.AdministratorRole)]
     public class ManageUsersController : Controller {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -19,7 +19,7 @@ namespace AspNetCoreTodo.Controllers {
 
         public async Task<IActionResult> Index() {
             var admins = (await _userManager
-            .GetUsersInRoleAsync("Administrator"))
+            .GetUsersInRoleAsync(Constants.AdministratorRole))
             .ToArray();
 
             var everyone = await _userManager.Users.ToArrayAsync();
