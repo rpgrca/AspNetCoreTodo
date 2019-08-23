@@ -2,3 +2,5 @@ AspNetCoreTodo/obj
 AspNetCoreTodo/bin
 AspNetCoreTodoTest/obj
 AspNetCoreTodoTest/bin
+AspNetCoreTodo.IntegrationTests/obj
+AspNetCoreTodo.IntegrationTests/bin
