@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.HttpClient;
+using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Xunit;
 
 namespace AspNetCoreTodo.IntegrationTests
@@ -19,7 +21,6 @@ namespace AspNetCoreTodo.IntegrationTests
                 .UseStartup<AspNetCoreTodo.Startup>()
                 .ConfigureAppConfiguration((ContextBoundObject, config) => {
                     config.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\..\\..\\AspNetCoreTodo"));
-
                     config.AddJsonFile("appsettings.json");
             });
 
