@@ -20,7 +20,7 @@ namespace AspNetCoreTodo.Test
             }
         }
 
-        private static TodoItem CreateTodoItem(DateTimeOffset dateTimeOffset, string userId, string itemTitle = _DefaultItemTitle, bool completed = false)
+        private static TodoItem CreateTodoItem(string userId, DateTimeOffset dateTimeOffset = default(DateTimeOffset), string itemTitle = _DefaultItemTitle, bool completed = false)
         {
             return new TodoItem
             {
@@ -51,7 +51,7 @@ namespace AspNetCoreTodo.Test
             {
                 var service = new TodoItemService(context);
                 ApplicationUser fakeUser = CreateFakeUser();
-                TodoItem todoItem = CreateTodoItem(dateTimeOffset, userId:fakeUser.Id);
+                TodoItem todoItem = CreateTodoItem(userId:fakeUser.Id, dateTimeOffset);
 
                 // When
                 await service.AddItemAsync(todoItem, fakeUser);
@@ -76,12 +76,11 @@ namespace AspNetCoreTodo.Test
         {
             // Given
             var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "Test_AddNewItem").Options;
-            var dateTimeOffset = DateTimeOffset.Now;
 
             using (var context = new ApplicationDbContext(options)) {
                 var service = new TodoItemService(context);
                 var fakeUser = CreateFakeUser();
-                var todoItem = CreateTodoItem(dateTimeOffset, userId:fakeUser.Id);
+                var todoItem = CreateTodoItem(userId:fakeUser.Id);
 
                 // When
                 await service.AddItemAsync(todoItem, fakeUser);
@@ -97,7 +96,7 @@ namespace AspNetCoreTodo.Test
                 Assert.False(item.IsDone);
 
                 var difference = DateTimeOffset.Now.AddDays(3) - item.DueAt;
-                Assert.True(difference < TimeSpan.FromSeconds(1));
+                Assert.True(difference < TimeSpan.FromSeconds(1), $"La diferencia fue de {difference} segundos.");
             }
 
             ClearDataBase(options);
@@ -133,7 +132,7 @@ namespace AspNetCoreTodo.Test
             {
                 var service = new TodoItemService(context);
                 var fakeUser = CreateFakeUser();
-                var todoItem = CreateTodoItem(dateTimeOffset, userId:fakeUser.Id);
+                var todoItem = CreateTodoItem(userId:fakeUser.Id, dateTimeOffset);
 
                 await service.AddItemAsync(todoItem, fakeUser);
             }
@@ -157,9 +156,9 @@ namespace AspNetCoreTodo.Test
             DateTime dueAt = DateTime.Today.AddDays(5);
             ApplicationUser userWithIncompletedItems = CreateFakeUser();
             ApplicationUser otherUser = CreateFakeUser("fake-001", "fake1@example.com");
-            TodoItem todoItemCompleted = CreateTodoItem(dueAt.AddDays(-10), userWithIncompletedItems.Id, "TodoItemCompleted", true);
-            TodoItem todoItemIncompleted = CreateTodoItem(dueAt, userWithIncompletedItems.Id, "TodoItemIncompleted");
-            TodoItem todoItemFromOtherUser = CreateTodoItem(dueAt.AddDays(5), otherUser.Id, "TodoItemFromOtherUser");
+            TodoItem todoItemCompleted = CreateTodoItem(userWithIncompletedItems.Id, dueAt.AddDays(-10), "TodoItemCompleted", true);
+            TodoItem todoItemIncompleted = CreateTodoItem(userWithIncompletedItems.Id, dueAt, "TodoItemIncompleted");
+            TodoItem todoItemFromOtherUser = CreateTodoItem(otherUser.Id, dueAt.AddDays(5), "TodoItemFromOtherUser");
 
             using (var context = new ApplicationDbContext(options)) {
                 await context.Items.AddAsync(todoItemCompleted);

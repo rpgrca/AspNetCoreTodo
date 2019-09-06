@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj": {}
+    "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj": {}
   },
   "projects": {
-    "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj": {
+    "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj",
+        "projectUniqueName": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj",
         "projectName": "AspNetCoreTodoTest",
-        "projectPath": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj",
+        "projectPath": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\AspNetCoreTodoTest.csproj",
         "packagesPath": "C:\\Users\\Java\\.nuget\\packages\\",
-        "outputPath": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\obj\\",
+        "outputPath": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodoTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -28,8 +28,8 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj": {
-                "projectPath": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj"
+              "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj": {
+                "projectPath": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj"
               }
             }
           }
@@ -80,14 +80,14 @@
         }
       }
     },
-    "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj": {
+    "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
+        "projectUniqueName": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
         "projectName": "AspNetCoreTodo",
-        "projectPath": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
+        "projectPath": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
         "packagesPath": "C:\\Users\\Java\\.nuget\\packages\\",
-        "outputPath": "c:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\obj\\",
+        "outputPath": "C:\\Roberto\\AspNetCoreTodo\\AspNetCoreTodo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -24,7 +24,7 @@ namespace AspNetCoreTodo.Services {
             newItem.UserId = user.Id;
 
             // Esto es logica de negocios: puede ir en el servicio o en el modelo
-            if (newItem.DueAt == null) {
+            if (newItem.DueAt == null || newItem.DueAt == default(DateTimeOffset)) {
                 newItem.DueAt = DateTimeOffset.Now.AddDays(3);
             }
 
