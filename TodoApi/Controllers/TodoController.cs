@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using TodoApi.Models;
+using TodoApi.DTO;
 
 namespace TodoApi.Controllers {
     [Route("api/[controller]")]
@@ -20,13 +21,18 @@ namespace TodoApi.Controllers {
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id) {
+        public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null) {
                 return NotFound();
             }
 
-            return todoItem;
+            TodoItemDTO dto = new TodoItemDTO();
+            dto.Id = todoItem.Id;
+            dto.Name = todoItem.Name;
+            dto.IsComplete = todoItem.IsComplete;
+
+            return dto;
         }
 
         [HttpGet]
