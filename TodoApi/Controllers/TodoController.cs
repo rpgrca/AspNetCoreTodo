@@ -64,6 +64,28 @@ namespace TodoApi.Controllers {
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItem item) {
+            if (id != item.Id) {
+                return BadRequest();
+            }
+
+#if false
+            _context.Entry(item).State = EntityState.Modified;
+#else
+            var myItem = await _context.TodoItems.FindAsync(id);
+            if (myItem == null) {
+                return BadRequest();
+            }
+
+            myItem.Name = item.Name;
+            myItem.IsComplete = item.IsComplete;
+#endif
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id) {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -77,5 +99,19 @@ namespace TodoApi.Controllers {
             return NoContent();
 
         }
+
+        [HttpGet("search")]
+        public ActionResult<List<TodoItem>> Get(string searchString) {
+            List<TodoItem> result = null;
+            if (searchString == null) {
+                result = _context.TodoItems.ToList();
+            }
+            else {
+                result = _context.TodoItems.Where(x => x.Name.ToLowerInvariant().Contains(searchString.ToLowerInvariant())).ToList();
+            }
+
+            return result;
+        }
     }
+
 }
