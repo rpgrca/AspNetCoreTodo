@@ -5,15 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using TodoApi.Models;
 using TodoApi.DTO;
+using TodoApi.Mappings;
 
 namespace TodoApi.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
         private readonly TodoContext _context;
+        private readonly SimpleMapping _mapper;
 
-        public TodoController(TodoContext context) {
+        public TodoController(TodoContext context, SimpleMapping mapper) {
             _context = context;
+            _mapper = mapper;
             if (_context.TodoItems.Count() == 0) {
                 _context.TodoItems.Add(new TodoItem { Name = "Item1"});
                 _context.SaveChanges();
@@ -27,10 +30,12 @@ namespace TodoApi.Controllers {
                 return NotFound();
             }
 
+/* 
             TodoItemDTO dto = new TodoItemDTO();
             dto.Id = todoItem.Id;
             dto.Name = todoItem.Name;
-            dto.IsComplete = todoItem.IsComplete;
+            dto.IsComplete = todoItem.IsComplete;*/
+            TodoItemDTO dto = _mapper.Map<TodoItemDTO>(todoItem);
 
             return dto;
         }
