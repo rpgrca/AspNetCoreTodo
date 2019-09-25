@@ -58,36 +58,36 @@ namespace TodoApi.Controllers {
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TodoItem>> PutTodoItem(long id, TodoItem item) {
-            if (id != item.Id) {
-                return BadRequest();
-            }
+        public async Task<ActionResult<TodoItem>> PutTodoItem(long id, TodoItemDTO itemDTO) {
+            //if (id != item.Id) {
+            //    return BadRequest();
+            //}
 
-#if false
-            _context.Entry(item).State = EntityState.Modified;
-#else
+//#if false
+//            _context.Entry(item).State = EntityState.Modified;
+//#else
             var myItem = await _context.TodoItems.FindAsync(id);
             if (myItem == null) {
                 return BadRequest();
             }
 
-            myItem.Name = item.Name;
-            myItem.IsComplete = item.IsComplete;
-#endif
+            myItem.Name = itemDTO.Name;
+            myItem.IsComplete = itemDTO.IsComplete;
+//#endif
 
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItem item) {
-            if (id != item.Id) {
-                return BadRequest();
-            }
+        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItemDTO item) {
+            //if (id != item.Id) {
+            //    return BadRequest();
+            //}
 
-#if false
-            _context.Entry(item).State = EntityState.Modified;
-#else
+//#if false
+//            _context.Entry(item).State = EntityState.Modified;
+//#else
             var myItem = await _context.TodoItems.FindAsync(id);
             if (myItem == null) {
                 return BadRequest();
@@ -95,7 +95,7 @@ namespace TodoApi.Controllers {
 
             myItem.Name = item.Name;
             myItem.IsComplete = item.IsComplete;
-#endif
+//#endif
 
             await _context.SaveChangesAsync();
             return NoContent();
