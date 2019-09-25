@@ -6,15 +6,17 @@ using System.Linq;
 using TodoApi.Models;
 using TodoApi.DTO;
 using TodoApi.Mappings;
+using AutoMapper;
 
 namespace TodoApi.Controllers {
+    //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
         private readonly TodoContext _context;
-        private readonly SimpleMapping _mapper;
+        private readonly IMapper _mapper;
 
-        public TodoController(TodoContext context, SimpleMapping mapper) {
+        public TodoController(TodoContext context, IMapper mapper) {
             _context = context;
             _mapper = mapper;
             if (_context.TodoItems.Count() == 0) {
@@ -24,6 +26,7 @@ namespace TodoApi.Controllers {
         }
 
         [HttpGet("{id}")]
+        //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null) {
@@ -46,7 +49,8 @@ namespace TodoApi.Controllers {
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item) {
+        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemDTO itemDTO) {
+            var item = _mapper.Map<TodoItem>(itemDTO);
             _context.TodoItems.Add(item);
             await _context.SaveChangesAsync();
 
