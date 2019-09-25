@@ -4,6 +4,6 @@ using TodoApi.Models;
 
 namespace TodoApi.Mappings {
     public class SimpleMapping : Profile {
-        public SimpleMapping() => CreateMap<TodoItem, TodoItemDTO>();
+        public SimpleMapping() => CreateMap<TodoItemDTO, TodoItem>();
     }
 }
