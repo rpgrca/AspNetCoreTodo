@@ -19,10 +19,10 @@ namespace TodoApi.Controllers {
         public TodoController(TodoContext context, IMapper mapper) {
             _context = context;
             _mapper = mapper;
-            if (_context.TodoItems.Count() == 0) {
+ /*            if (_context.TodoItems.Count() == 0) {
                 _context.TodoItems.Add(new TodoItem { Name = "Item1"});
                 _context.SaveChanges();
-            }
+            }*/
         }
 
         [HttpGet("{id}")]
