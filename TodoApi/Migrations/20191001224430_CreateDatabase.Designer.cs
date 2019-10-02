@@ -8,7 +8,7 @@ using TodoApi.Models;
 
 namespace TodoApi.Migrations
 {
-    [DbContext(typeof(TodoContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20191001224430_CreateDatabase")]
     partial class CreateDatabase
     {
