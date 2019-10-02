@@ -1,3 +1,4 @@
+/*
 using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.Models {
@@ -10,3 +11,4 @@ namespace TodoApi.Models {
         public DbSet<TodoItem> TodoItems {set; get;}
     }
 }
+*/
