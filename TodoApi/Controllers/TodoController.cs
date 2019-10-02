@@ -13,10 +13,10 @@ namespace TodoApi.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
-        private readonly TodoContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public TodoController(TodoContext context, IMapper mapper) {
+        public TodoController(ApplicationDbContext context, IMapper mapper) {
             _context = context;
             _mapper = mapper;
  /*            if (_context.TodoItems.Count() == 0) {
