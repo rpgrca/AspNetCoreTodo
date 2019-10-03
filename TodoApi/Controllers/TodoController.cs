@@ -5,128 +5,84 @@ using System.Collections.Generic;
 using System.Linq;
 using TodoApi.Models;
 using TodoApi.DTO;
+using TodoApi.Services;
 using TodoApi.Mappings;
-using AutoMapper;
+using System;
 
 namespace TodoApi.Controllers {
     //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ITodoItemService _todoItemService;
 
-        public TodoController(ApplicationDbContext context, IMapper mapper) {
-            _context = context;
-            _mapper = mapper;
- /*            if (_context.TodoItems.Count() == 0) {
-                _context.TodoItems.Add(new TodoItem { Name = "Item1"});
-                _context.SaveChanges();
-            }*/
+        public TodoController(ITodoItemService todoItemService) {
+            _todoItemService = todoItemService;
         }
 
         [HttpGet("{id}")]
         //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null) {
+            TodoItemDTO todoItemDTO = await _todoItemService.GetTodoItemAsync(id);
+            if (todoItemDTO == null) {
                 return NotFound();
             }
 
-/* 
-            TodoItemDTO dto = new TodoItemDTO();
-            dto.Id = todoItem.Id;
-            dto.Name = todoItem.Name;
-            dto.IsComplete = todoItem.IsComplete;*/
-            TodoItemDTO dto = _mapper.Map<TodoItemDTO>(todoItem);
-
-            return dto;
+            return Ok(todoItemDTO);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems() {
-            return await _context.TodoItems.ToListAsync();
+            IEnumerable<TodoItem> list = await _todoItemService.GetTodoItemsAsync();
+            return Ok(list);
         }
 
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemDTO itemDTO) {
-            var item = _mapper.Map<TodoItem>(itemDTO);
-            _context.TodoItems.Add(item);
-            await _context.SaveChangesAsync();
-
+            var item = await _todoItemService.PostTodoItemAsync(itemDTO);
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id}, item);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<TodoItem>> PutTodoItem(long id, TodoItemDTO itemDTO) {
-            //if (id != item.Id) {
-            //    return BadRequest();
-            //}
-
-//#if false
-//            _context.Entry(item).State = EntityState.Modified;
-//#else
-            var myItem = await _context.TodoItems.FindAsync(id);
-            if (myItem == null) {
-                return BadRequest();
+            try {
+                TodoItem todoItem = await _todoItemService.PutTodoItemAsync(id, itemDTO);
+            }
+            catch (ArgumentException) {
+                return NotFound();
             }
 
-            myItem.Name = itemDTO.Name;
-            myItem.IsComplete = itemDTO.IsComplete;
-//#endif
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItemDTO item) {
-            //if (id != item.Id) {
-            //    return BadRequest();
-            //}
-
-//#if false
-//            _context.Entry(item).State = EntityState.Modified;
-//#else
-            var myItem = await _context.TodoItems.FindAsync(id);
-            if (myItem == null) {
-                return BadRequest();
+        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItemDTO itemDTO) {
+            try {
+                TodoItem todoItem = await _todoItemService.PatchTodoItemAsync(id, itemDTO);
+            }
+            catch (ArgumentException) {
+                return NotFound();
             }
 
-            myItem.Name = item.Name;
-            myItem.IsComplete = item.IsComplete;
-//#endif
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id) {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null) {
+            try {
+                 TodoItem todoItem = await _todoItemService.DeleteTodoItemAsync(id);
+            }
+            catch (ArgumentException) {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-
         }
 
         [HttpGet("search")]
-        public ActionResult<List<TodoItem>> Get(string searchString) {
-            List<TodoItem> result = null;
-            if (searchString == null) {
-                result = _context.TodoItems.ToList();
-            }
-            else {
-                result = _context.TodoItems.Where(x => x.Name.ToLowerInvariant().Contains(searchString.ToLowerInvariant())).ToList();
-            }
-
-            return result;
+        public async Task<ActionResult<List<TodoItem>>> SearchTodoItem(string searchString) {
+            List<TodoItem> result = await _todoItemService.SearchTodoItemAsync(searchString);
+            return Ok(result);
         }
     }
-
 }
