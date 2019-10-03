@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TodoApi.Services;
 
 namespace TodoApi
 {
@@ -36,7 +37,9 @@ namespace TodoApi
             //services.AddDbContext<TodoContext>(opt =>
             //    opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<ApplicationDbContext>();
-
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<ITodoItemService, TodoItemService>();
+ 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c => {
@@ -65,8 +68,7 @@ namespace TodoApi
                     };
                 });
 
-            services.AddAutoMapper(typeof(Startup));
-        }
+       }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
