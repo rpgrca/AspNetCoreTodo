@@ -1,0 +1,21 @@
+.todo-item-label {
+    float: left;
+    width: 80%;
+    text-align: left;
+}
+
+.todo-item-delete {
+    float: left;
+    width: 10px;
+}
+
+.todo-item-checkbox {
+    float: left;
+    width: 50px;
+    text-align: right;
+}
+
+.todo-item-form {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
