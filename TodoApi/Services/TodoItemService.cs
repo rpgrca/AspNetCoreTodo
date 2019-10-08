@@ -12,13 +12,14 @@ namespace TodoApi.Services {
     public class TodoItemService : ITodoItemService {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+
         public TodoItemService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<TodoItem> DeleteTodoItemAsync(long id)
+        public async Task<TodoItemDTO> DeleteTodoItemAsync(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null) {
@@ -28,20 +29,23 @@ namespace TodoApi.Services {
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
 
-            return todoItem;
+            return _mapper.Map<TodoItemDTO>(todoItem);
         }
 
         public async Task<TodoItemDTO> GetTodoItemAsync(long id)
         {
             TodoItem todoItem = await _context.TodoItems.FindAsync(id);
-            TodoItemDTO todoItemDTO = _mapper.Map<TodoItem,TodoItemDTO>(todoItem);
+            TodoItemDTO todoItemDTO = _mapper.Map<TodoItemDTO>(todoItem);
 
             return todoItemDTO;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetTodoItemsAsync()
+        public async Task<List<TodoItemDTO>> GetTodoItemsAsync()
         {
-            return await _context.TodoItems.ToListAsync();
+            var todoItems = await _context.TodoItems.ToListAsync();
+            var todoItemsDTO = _mapper.Map<List<TodoItemDTO>>(todoItems);
+
+            return todoItemsDTO;
         }
 
         public async Task<TodoItem> PatchTodoItemAsync(long id, TodoItemDTO itemDTO)
@@ -51,8 +55,7 @@ namespace TodoApi.Services {
                 throw new ArgumentException("Invalid id", nameof(id));
             }
 
-            todoItem.Name = itemDTO.Name;
-            todoItem.IsComplete = itemDTO.IsComplete;
+            CopyFromDTO(todoItem, itemDTO);
 
             await _context.SaveChangesAsync();
             return todoItem;
@@ -60,7 +63,7 @@ namespace TodoApi.Services {
 
         public async Task<TodoItem> PostTodoItemAsync(TodoItemDTO itemDTO)
         {
-            var item = _mapper.Map<TodoItemDTO,TodoItem>(itemDTO);
+            var item = _mapper.Map<TodoItem>(itemDTO);
             _context.TodoItems.Add(item);
 
             await _context.SaveChangesAsync();
@@ -74,14 +77,13 @@ namespace TodoApi.Services {
                 throw new ArgumentException("Invalid id", nameof(id));
             }
 
-            todoItem.Name = itemDTO.Name;
-            todoItem.IsComplete = itemDTO.IsComplete;
+            CopyFromDTO(todoItem, itemDTO);
 
             await _context.SaveChangesAsync();
             return todoItem;
         }
 
-        public async Task<List<TodoItem>> SearchTodoItemAsync(string text)
+        public async Task<List<TodoItemDTO>> SearchTodoItemsAsync(string text)
         {
             List<TodoItem> result = null;
             if (string.IsNullOrEmpty(text)) {
@@ -91,7 +93,17 @@ namespace TodoApi.Services {
                 result = await _context.TodoItems.Where(x => x.Name.ToLowerInvariant().Contains(text.ToLowerInvariant())).ToListAsync();
             }
 
-            return result;
+            var todoItemsDTO = _mapper.Map<List<TodoItemDTO>>(result);
+            return todoItemsDTO;
+        }
+
+        private void CopyFromDTO(TodoItem todoItem, TodoItemDTO todoItemDTO)
+        {
+            todoItem.Name = todoItemDTO.Name;
+            todoItem.IsComplete = todoItemDTO.IsComplete;
+            todoItem.Description = todoItemDTO.Description;
+            todoItem.DueAt = todoItemDTO.DueAt;
+            todoItem.Order = todoItemDTO.Order;
         }
     }
 }

@@ -8,11 +8,11 @@ using TodoApi.DTO;
 namespace TodoApi.Services {
     public interface ITodoItemService {
         Task<TodoItemDTO> GetTodoItemAsync(long id);
-        Task<IEnumerable<TodoItem>> GetTodoItemsAsync(); // TODO: Devolver lista de TodoItemDTO
+        Task<List<TodoItemDTO>> GetTodoItemsAsync();
         Task<TodoItem> PutTodoItemAsync(long id, TodoItemDTO itemDTO);
         Task<TodoItem> PostTodoItemAsync(TodoItemDTO itemDTO);
         Task<TodoItem> PatchTodoItemAsync(long id, TodoItemDTO itemDTO);
-        Task<TodoItem> DeleteTodoItemAsync(long id);
-        Task<List<TodoItem>> SearchTodoItemAsync(string text);
+        Task<TodoItemDTO> DeleteTodoItemAsync(long id);
+        Task<List<TodoItemDTO>> SearchTodoItemsAsync(string text);
     }
 }
