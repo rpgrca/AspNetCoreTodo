@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoApi.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace TodoApi
 {
@@ -39,13 +40,18 @@ namespace TodoApi
             //services.AddDbContext<ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ITodoItemService, TodoItemService>();
  
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

@@ -80,7 +80,7 @@ namespace TodoApi.Controllers {
         }
 
         [HttpGet("search/{searchString}")]
-        public async Task<ActionResult<List<TodoItemDTO>>> SearchTodoItems(string searchString) {
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> SearchTodoItems(string searchString) {
             List<TodoItemDTO> result = await _todoItemService.SearchTodoItemsAsync(searchString);
             return Ok(result);
         }

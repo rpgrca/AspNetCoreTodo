@@ -29,7 +29,7 @@ namespace TodoApi.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _configuration =     configuration;
+            _configuration = configuration;
         }
         
         [HttpPost]
@@ -41,9 +41,10 @@ namespace TodoApi.Controllers
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
                 return GenerateJwtToken(model.Email, appUser);
-            }else
+            }
+            else
             {
-                throw new ApplicationException("Invalid Login"); //TODO resolver con un retorno de error correcto
+                throw new ApplicationException("Invalid Login");
             }
         }
        
@@ -61,9 +62,17 @@ namespace TodoApi.Controllers
             {
                 await _signInManager.SignInAsync(user, false);
                 return GenerateJwtToken(model.Email, user);
-            }else
+            }
+            else
             {
-                throw new ApplicationException("UNKNOWN_ERROR"); //TODO resolver con un retorno de error correcto
+                if (result.Errors.Count() > 0)
+                {
+                    throw new ApplicationException(result.Errors.ElementAt(0).Description);
+                }
+                else
+                {
+                    throw new ApplicationException("UNKNOWN_ERROR");
+                }
             }
         }
         

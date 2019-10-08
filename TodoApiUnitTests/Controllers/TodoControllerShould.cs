@@ -13,9 +13,8 @@ using Xunit;
 
 namespace TodoApi.UnitTests.Services
 {
-    public partial class TodoControllerShould {
+    public class TodoControllerShould {
         private const long _DefaultItemDTOId = 1;
-        private const string _DefaultDatabaseName = "TodoControllerUnitTestDb";
         private const string _DefaultItemDTOName = "TodoItemDTO";
         private const string _DefaultItemDTODescription = "Esta es la descripcion del TodoItemDTO";
         private const long _DefaultItemDTOOrder = 0;
@@ -253,7 +252,41 @@ namespace TodoApi.UnitTests.Services
             Assert.Equal((int)HttpStatusCode.NoContent, noContentResult.StatusCode);
         }
 
-        private static TodoItemDTO CreateFakeTodoItemDTO(long itemId = _DefaultItemDTOId, string itemName = _DefaultItemDTOName, string itemDescription = _DefaultItemDTODescription, bool completed = false, long order = _DefaultItemDTOOrder, DateTimeOffset dateTimeOffset = default(DateTimeOffset)) => new TodoItemDTO
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task SearchTodoItems_WithEmptyOrNullText_ShouldReturnEverything(string searchText)
+        {
+            // Arrange
+            var expectedTodoItemDTOs = new List<TodoItemDTO>() { CreateFakeTodoItemDTO(1), CreateFakeTodoItemDTO(2) };
+            var mockService = new Mock<ITodoItemService>();
+            mockService.Setup(service => service.SearchTodoItemsAsync(searchText))
+                       .ReturnsAsync((expectedTodoItemDTOs));
+
+            var controller = new TodoController(mockService.Object);
+
+            // Act
+            var result = await controller.SearchTodoItems(searchText);
+
+            // Assert
+            var viewResult = Assert.IsType<ActionResult<IEnumerable<TodoItemDTO>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(viewResult.Result);
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
+            var todoItemsDTO = Assert.IsAssignableFrom<IEnumerable<TodoItemDTO>>(okResult.Value);
+            Assert.Equal(expectedTodoItemDTOs.Count, todoItemsDTO.Count());
+
+            var todoItemsDTOList = todoItemsDTO.ToList();
+            for (int index = 0; index < expectedTodoItemDTOs.Count; index++)
+            {
+                Assert.Equal(expectedTodoItemDTOs[index].Name, todoItemsDTOList[index].Name);
+                Assert.Equal(expectedTodoItemDTOs[index].Description, todoItemsDTOList[index].Description);
+                Assert.Equal(expectedTodoItemDTOs[index].DueAt, todoItemsDTOList[index].DueAt);
+                Assert.Equal(expectedTodoItemDTOs[index].IsComplete, todoItemsDTOList[index].IsComplete);
+                Assert.Equal(expectedTodoItemDTOs[index].Order, todoItemsDTOList[index].Order);
+            }
+        }
+
+        private static TodoItemDTO CreateFakeTodoItemDTO(long itemId = _DefaultItemDTOId, string itemName = _DefaultItemDTOName, string itemDescription = _DefaultItemDTODescription, bool completed = false, long order = _DefaultItemDTOOrder, DateTimeOffset dateTimeOffset = default) => new TodoItemDTO
         {
             Name = $"{itemName} {itemId}",
             Description = $"{itemDescription} {itemId}",

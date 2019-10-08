@@ -1,14 +1,15 @@
 using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi.Models {
-    public class ApplicationDbContext : DbContext {
+    public class ApplicationDbContext : IdentityDbContext {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-/*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlite("DataSource=todoitems.db");
         }*/
 
