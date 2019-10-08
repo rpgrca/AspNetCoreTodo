@@ -36,7 +36,9 @@ namespace TodoApi
         {
             //services.AddDbContext<TodoContext>(opt =>
             //    opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<ApplicationDbContext>();
+            //services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(opt =>
+                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ITodoItemService, TodoItemService>();
  
