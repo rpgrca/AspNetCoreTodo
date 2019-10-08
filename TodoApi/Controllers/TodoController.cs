@@ -20,7 +20,7 @@ namespace TodoApi.Controllers {
             _todoItemService = todoItemService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:regex(^[[0-9]]+$)}")]
         //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
             TodoItemDTO todoItemDTO = await _todoItemService.GetTodoItemAsync(id);
@@ -32,8 +32,8 @@ namespace TodoApi.Controllers {
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems() {
-            IEnumerable<TodoItem> list = await _todoItemService.GetTodoItemsAsync();
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems() {
+            var list = await _todoItemService.GetTodoItemsAsync();
             return Ok(list);
         }
 
@@ -68,9 +68,9 @@ namespace TodoApi.Controllers {
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id) {
+        public async Task<ActionResult<TodoItemDTO>> DeleteTodoItem(long id) {
             try {
-                 TodoItem todoItem = await _todoItemService.DeleteTodoItemAsync(id);
+                 TodoItemDTO todoItem = await _todoItemService.DeleteTodoItemAsync(id);
             }
             catch (ArgumentException) {
                 return NotFound();
@@ -79,9 +79,9 @@ namespace TodoApi.Controllers {
             return NoContent();
         }
 
-        [HttpGet("search")]
-        public async Task<ActionResult<List<TodoItem>>> SearchTodoItem(string searchString) {
-            List<TodoItem> result = await _todoItemService.SearchTodoItemAsync(searchString);
+        [HttpGet("search/{searchString}")]
+        public async Task<ActionResult<List<TodoItemDTO>>> SearchTodoItems(string searchString) {
+            List<TodoItemDTO> result = await _todoItemService.SearchTodoItemsAsync(searchString);
             return Ok(result);
         }
     }
