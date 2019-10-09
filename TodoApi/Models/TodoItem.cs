@@ -19,6 +19,6 @@ namespace TodoApi.Models {
 
         public long Order { get; set; }
 
-
+        public ApplicationUser Responsible { get; set; }
     }
 }

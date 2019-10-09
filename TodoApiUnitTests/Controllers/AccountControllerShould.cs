@@ -48,9 +48,9 @@ namespace TodoApi.UnitTests.Services
         public async Task Login_WithCorrectLogin_ShouldGenerateToken(string email, string password)
         {
             // Arrange
-            var mockUsers = new Mock<IQueryable<IdentityUser>>();
-            mockUsers.Setup(x => x.SingleOrDefault(It.IsAny<Func<IdentityUser, bool>>()))
-                     .Returns(new IdentityUser(email));
+            var mockUsers = new Mock<IQueryable<ApplicationUser>>();
+            mockUsers.Setup(x => x.SingleOrDefault(It.IsAny<Func<ApplicationUser, bool>>()))
+                     .Returns(new ApplicationUser(email));
 
             var mockUserManager = new Mock<FakeUserManager>();
             mockUserManager.SetupGet(x => x.Users)
@@ -73,11 +73,11 @@ namespace TodoApi.UnitTests.Services
         public async Task Register_WithValidInformation_ShouldGenerateToken(string email, string password)
         {
             // Arrange
-            var identityUser = new IdentityUser { UserName = email, Email = email };
+            var identityUser = new ApplicationUser { UserName = email, Email = email };
             var mockConfiguration = new Mock<IConfiguration>();
 
             var mockUserManager = new Mock<FakeUserManager>();
-            mockUserManager.Setup(x => x.CreateAsync(It.Is<IdentityUser>(p => p.Email == email && p.UserName == email), password))
+            mockUserManager.Setup(x => x.CreateAsync(It.Is<ApplicationUser>(p => p.Email == email && p.UserName == email), password))
                            .ReturnsAsync(IdentityResult.Success);
 
             var mockSignInManager = new Mock<FakeSignInManager>();

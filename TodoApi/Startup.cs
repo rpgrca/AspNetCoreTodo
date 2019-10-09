@@ -41,7 +41,7 @@ namespace TodoApi
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
