@@ -8,9 +8,11 @@ using TodoApi.DTO;
 using TodoApi.Services;
 using TodoApi.Mappings;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoApi.Controllers {
     //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
