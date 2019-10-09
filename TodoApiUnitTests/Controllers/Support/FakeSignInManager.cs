@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using TodoApi.Models;
 
-namespace TodoApiUnitTests.Controllers.Support
+namespace TodoApi.UnitTests.Controllers.Support
 {
     public class FakeSignInManager : SignInManager<ApplicationUser>
     {

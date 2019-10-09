@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TodoApi.Models;
 
-namespace TodoApiUnitTests.Controllers.Support
+namespace TodoApi.UnitTests.Controllers.Support
 {
     public class FakeUserManager : UserManager<ApplicationUser>
     {
