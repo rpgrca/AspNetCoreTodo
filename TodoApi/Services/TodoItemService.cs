@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TodoApi.Services {
     public class TodoItemService : ITodoItemService {
@@ -48,14 +49,16 @@ namespace TodoApi.Services {
             return todoItemsDTO;
         }
 
-        public async Task<TodoItem> PatchTodoItemAsync(long id, TodoItemDTO itemDTO)
+        public async Task<TodoItem> PatchTodoItemAsync(long id, JsonPatchDocument<TodoItemDTO> patch)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null) {
                 throw new ArgumentException("Invalid id", nameof(id));
             }
 
-            CopyFromDTO(todoItem, itemDTO);
+            var todoItemDTO = _mapper.Map<TodoItemDTO>(todoItem);
+            patch.ApplyTo(todoItemDTO);
+            CopyFromDTO(todoItem, todoItemDTO);
 
             await _context.SaveChangesAsync();
             return todoItem;

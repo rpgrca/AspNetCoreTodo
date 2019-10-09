@@ -83,7 +83,7 @@ namespace TodoApi.UnitTests.Services
             // Arrange
             var identityUser = new ApplicationUser { UserName = email, Email = email };
             var mockConfiguration = new Mock<IConfiguration>();
-            mockConfiguration.SetupGet(x => x["JwtKey"]).Returns("SOME_RANDOM_KEY_DO_NOT_SHARE");
+            mockConfiguration.SetupGet(x => x["JwtKey"]).Returns("SOME_RANDOM_KEY_DO_NOT_SHARE1");
             mockConfiguration.SetupGet(x => x["JwtIssuer"]).Returns("http://yourdomain.com");
             mockConfiguration.SetupGet(x => x["JwtExpireDays"]).Returns("30");
 

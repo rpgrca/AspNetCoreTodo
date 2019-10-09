@@ -9,6 +9,7 @@ using TodoApi.Services;
 using TodoApi.Mappings;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TodoApi.Controllers {
     //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
@@ -58,9 +59,9 @@ namespace TodoApi.Controllers {
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, TodoItemDTO itemDTO) {
+        public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, JsonPatchDocument<TodoItemDTO> patch) {
             try {
-                TodoItem todoItem = await _todoItemService.PatchTodoItemAsync(id, itemDTO);
+                TodoItem todoItem = await _todoItemService.PatchTodoItemAsync(id, patch);
             }
             catch (ArgumentException) {
                 return NotFound();

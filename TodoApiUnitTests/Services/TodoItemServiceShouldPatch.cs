@@ -6,6 +6,8 @@ using TodoApi.DTO;
 using TodoApi.Services;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json;
 
 namespace TodoApi.UnitTests.Services
 {
@@ -20,7 +22,7 @@ namespace TodoApi.UnitTests.Services
             // Arrange
             var options = GetInMemoryOptions();
             var mapper = GetMapper();
-            var todoItemDTO = mapper.Map<TodoItemDTO>(CreateFakeTodoItem());
+            var patch = new JsonPatchDocument<TodoItemDTO>(); // todoItemDTO = mapper.Map<TodoItemDTO>(CreateFakeTodoItem());
 
             ClearDataBase(options);
 
@@ -29,7 +31,7 @@ namespace TodoApi.UnitTests.Services
                 var service = new TodoItemService(context, mapper);
 
                 // Assert
-                await Assert.ThrowsAsync<ArgumentException>("id", async () => await service.PatchTodoItemAsync(id, todoItemDTO));
+                await Assert.ThrowsAsync<ArgumentException>("id", async () => await service.PatchTodoItemAsync(id, patch));
             }
 
             ClearDataBase(options);
@@ -45,7 +47,7 @@ namespace TodoApi.UnitTests.Services
             var options = GetInMemoryOptions();
             var mapper = GetMapper();
             var existingItem = CreateFakeTodoItem(1);
-            var todoItemDTO = mapper.Map<TodoItemDTO>(CreateFakeTodoItem(1));
+            var patch = new JsonPatchDocument<TodoItemDTO>();
 
             ClearDataBase(options);
 
@@ -61,17 +63,17 @@ namespace TodoApi.UnitTests.Services
 
                 // Act
                 // Assert
-                await Assert.ThrowsAsync<ArgumentException>("id", async () => await service.PatchTodoItemAsync(id, todoItemDTO));
+                await Assert.ThrowsAsync<ArgumentException>("id", async () => await service.PatchTodoItemAsync(id, patch));
             }
 
             ClearDataBase(options);
         }
 
         [Theory]
-        [InlineData(1)] // First element
-        [InlineData(2)] // Middle
-        [InlineData(3)] // Last element
-        public async Task PatchTodoItemAsync_WithValidIdAndExistingElement_ShouldUpdateItem(long id)
+        [InlineData(1, "TODO ITEM 1", "[{ \"op\": \"replace\", \"path\": \"Name\", \"value\": \"TODO ITEM 1\" }]")] // First element
+        [InlineData(2, "TODO ITEM 2", "[{ \"op\": \"replace\", \"path\": \"Name\", \"value\": \"TODO ITEM 2\" }]")] // Middle
+        [InlineData(3, "TODO ITEM 3", "[{ \"op\": \"replace\", \"path\": \"Name\", \"value\": \"TODO ITEM 3\" }]")] // Last element
+        public async Task PatchTodoItemAsync_WithValidIdAndExistingElement_ShouldUpdateItem(long id, string newName, string jsonPatch)
         {
             // Arrange
             var expectedTodoItems = new[] {
@@ -81,7 +83,8 @@ namespace TodoApi.UnitTests.Services
             };
             var options = GetInMemoryOptions();
             var mapper = GetMapper();
-            var updatedTodoItem = mapper.Map<TodoItemDTO>(CreateFakeTodoItem(0));
+            var updatedTodoItem = mapper.Map<TodoItemDTO>(CreateFakeTodoItem(id));
+            updatedTodoItem.Name = newName;
 
             ClearDataBase(options);
 
@@ -103,8 +106,10 @@ namespace TodoApi.UnitTests.Services
 
             using (var context = new ApplicationDbContext(options))
             {
+                var jsonPatchDocument = JsonConvert.DeserializeObject<JsonPatchDocument<TodoItemDTO>>(jsonPatch);
+
                 var service = new TodoItemService(context, mapper);
-                modifiedItem = await service.PatchTodoItemAsync(id, updatedTodoItem);
+                modifiedItem = await service.PatchTodoItemAsync(id, jsonPatchDocument);
                 await context.SaveChangesAsync();
             }
 

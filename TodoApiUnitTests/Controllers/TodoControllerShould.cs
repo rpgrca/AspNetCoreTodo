@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TodoApi.Controllers;
@@ -179,15 +180,15 @@ namespace TodoApi.UnitTests.Services
         [Fact]
         public async Task PatchTodoItem_WithInvalidId_ShouldReturnNotFound() {
             // Arrange
-            var todoItemDTO = CreateFakeTodoItemDTO(1);
             var mockService = new Mock<ITodoItemService>();
-            mockService.Setup(service => service.PatchTodoItemAsync(1, todoItemDTO))
+            var patch = new JsonPatchDocument<TodoItemDTO>();
+            mockService.Setup(service => service.PatchTodoItemAsync(1, patch))
                        .ThrowsAsync(new ArgumentException("Invalid id", "id"));
 
             var controller = new TodoController(mockService.Object);
 
             // Act
-            var result = await controller.PatchTodoItem(1, todoItemDTO);
+            var result = await controller.PatchTodoItem(1, patch);
 
             // Assert
             var viewResult = Assert.IsType<ActionResult<TodoItem>>(result);
@@ -198,15 +199,15 @@ namespace TodoApi.UnitTests.Services
         [Fact]
         public async Task PatchTodoItem_WithValidId_ShouldReturnNoContent() {
             // Arrange
-            var todoItemDTO = CreateFakeTodoItemDTO(1);
             var mockService = new Mock<ITodoItemService>();
-            mockService.Setup(service => service.PatchTodoItemAsync(1, todoItemDTO))
+            var patch = new JsonPatchDocument<TodoItemDTO>();
+            mockService.Setup(service => service.PatchTodoItemAsync(1, patch))
                        .ReturnsAsync(new TodoItem());
 
             var controller = new TodoController(mockService.Object);
 
             // Act
-            var result = await controller.PatchTodoItem(1, todoItemDTO);
+            var result = await controller.PatchTodoItem(1, patch);
 
             // Assert
             var viewResult = Assert.IsType<ActionResult<TodoItem>>(result);
