@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 
 namespace TodoApi.ActionFilters {
+    /*
     public class ValidatorFilterAttribute : IActionFilter {
         public void OnActionExecuting(ActionExecutingContext context) {
             var client = context.HttpContext.Request.Headers["client"];
@@ -17,5 +18,5 @@ namespace TodoApi.ActionFilters {
         {
             
         }
-    }
+    }*/
 }
