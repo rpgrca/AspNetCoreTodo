@@ -20,6 +20,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoApi.Services;
 using Microsoft.AspNetCore.Identity;
+using TodoApi.Swagger.OperationFilters;
+using System.Collections;
 
 namespace TodoApi
 {
@@ -35,6 +37,8 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*services.AddCors();*/
+
             //services.AddDbContext<TodoContext>(opt =>
             //    opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ApplicationDbContext>();
@@ -52,6 +56,16 @@ namespace TodoApi
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme.",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer"
+                });
+
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -90,6 +104,13 @@ namespace TodoApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            /*app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());*/
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseSwagger();

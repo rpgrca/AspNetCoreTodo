@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace TodoApi.Controllers {
     //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
@@ -23,6 +22,7 @@ namespace TodoApi.Controllers {
             _todoItemService = todoItemService;
         }
 
+        [Authorize]
         [HttpGet("{id:regex(^[[0-9]]+$)}")]
         //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
@@ -34,18 +34,21 @@ namespace TodoApi.Controllers {
             return Ok(todoItemDTO);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems() {
             var list = await _todoItemService.GetTodoItemsAsync();
             return Ok(list);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemDTO itemDTO) {
             var item = await _todoItemService.PostTodoItemAsync(itemDTO);
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id}, item);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<TodoItem>> PutTodoItem(long id, TodoItemDTO itemDTO) {
             try {
@@ -58,6 +61,7 @@ namespace TodoApi.Controllers {
             return NoContent();
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<TodoItem>> PatchTodoItem(long id, JsonPatchDocument<TodoItemDTO> patch) {
             try {
@@ -70,6 +74,7 @@ namespace TodoApi.Controllers {
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItemDTO>> DeleteTodoItem(long id) {
             try {
@@ -82,6 +87,7 @@ namespace TodoApi.Controllers {
             return NoContent();
         }
 
+        [Authorize]
         [HttpGet("search/{searchString}")]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> SearchTodoItems(string searchString) {
             List<TodoItemDTO> result = await _todoItemService.SearchTodoItemsAsync(searchString);
