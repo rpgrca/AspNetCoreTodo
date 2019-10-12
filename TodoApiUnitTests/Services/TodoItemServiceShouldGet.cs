@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoApi.Models;
@@ -46,7 +47,7 @@ namespace TodoApi.UnitTests.Services
         [InlineData(-1)]
         [InlineData(0)]
         [InlineData(2)]
-        public async Task GetTodoItemAsync_WithInvalidIdAndExistingElement_ShouldReturnNull(long id)
+        public async Task GetTodoItemAsync_WithInvalidIdAndExistingElement_ShouldThrowException(long id)
         {
             // Arrange
             var expectedTodoItem = CreateFakeTodoItem();
@@ -61,14 +62,12 @@ namespace TodoApi.UnitTests.Services
                 await context.SaveChangesAsync();
             }
 
-            // Act
             using (var context = new ApplicationDbContext(options))
             {
                 var service = new TodoItemService(context, mapper);
-                var todoItem = await service.GetTodoItemAsync(id);
 
-                // Assert
-                Assert.Null(todoItem);
+                // Act / Assert
+                await Assert.ThrowsAsync<ArgumentException>("id", () => service.GetTodoItemAsync(id));
             }
 
             ClearDataBase(options);
@@ -78,7 +77,7 @@ namespace TodoApi.UnitTests.Services
         [InlineData(-1)]
         [InlineData(0)]
         [InlineData(1)]
-        public async Task GetTodoItemAsync_WithInvalidIdAndEmptyList_ShouldReturnNull(long id)
+        public async Task GetTodoItemAsync_WithInvalidIdAndEmptyList_ShouldThrowException(long id)
         {
             // Arrange
             var options = GetInMemoryOptions();
@@ -90,11 +89,8 @@ namespace TodoApi.UnitTests.Services
             {
                 var service = new TodoItemService(context, mapper);
 
-                // Act
-                var todoItem = await service.GetTodoItemAsync(id);
-
-                // Assert
-                Assert.Null(todoItem);
+                // Act / Assert
+                await Assert.ThrowsAsync<ArgumentException>("id", () => service.GetTodoItemAsync(id));
             }
 
             ClearDataBase(options);

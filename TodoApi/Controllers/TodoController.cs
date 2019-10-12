@@ -10,9 +10,11 @@ using TodoApi.Mappings;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Http;
 
 namespace TodoApi.Controllers {
     //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
@@ -24,14 +26,17 @@ namespace TodoApi.Controllers {
 
         [Authorize]
         [HttpGet("{id:regex(^[[0-9]]+$)}")]
-        //[ServiceFilter(typeof(ActionFilters.ValidatorFilterAttribute))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id) {
-            TodoItemDTO todoItemDTO = await _todoItemService.GetTodoItemAsync(id);
-            if (todoItemDTO == null) {
+            try {
+                TodoItemDTO todoItemDTO = await _todoItemService.GetTodoItemAsync(id);
+                return Ok(todoItemDTO);
+            }
+            catch (ArgumentException) {
                 return NotFound();
             }
-
-            return Ok(todoItemDTO);
+            catch (Exception) {
+                return BadRequest();
+            }
         }
 
         [Authorize]
@@ -43,6 +48,7 @@ namespace TodoApi.Controllers {
 
         [Authorize]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemDTO itemDTO) {
             var item = await _todoItemService.PostTodoItemAsync(itemDTO);
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id}, item);

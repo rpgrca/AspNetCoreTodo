@@ -36,8 +36,11 @@ namespace TodoApi.Services {
         public async Task<TodoItemDTO> GetTodoItemAsync(long id)
         {
             TodoItem todoItem = await _context.TodoItems.FindAsync(id);
-            TodoItemDTO todoItemDTO = _mapper.Map<TodoItemDTO>(todoItem);
+            if (todoItem == null) {
+                throw new ArgumentException("Invalid id", nameof(id));
+            }
 
+            TodoItemDTO todoItemDTO = _mapper.Map<TodoItemDTO>(todoItem);
             return todoItemDTO;
         }
 
