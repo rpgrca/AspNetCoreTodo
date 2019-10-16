@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TodoApi.DTO;
+using TodoApi.Error;
 using TodoApi.Models;
 
 namespace TodoApi.Controllers
@@ -45,7 +46,8 @@ namespace TodoApi.Controllers
             }
             else
             {
-                throw new ApplicationException("Invalid Login");
+                return Ok(new ErrorMessage("Invalid credentials"));
+                //throw new ApplicationException("Invalid Login");
             }
         }
 

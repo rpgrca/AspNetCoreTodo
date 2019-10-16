@@ -43,7 +43,9 @@ namespace TodoApi
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<ITodoItemService, TodoItemService>();
+            //services.AddScoped<ITodoRepository, TodoRepository>(); TODO: Implementacion de Repository Pattern
  
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -106,6 +108,9 @@ namespace TodoApi
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
+
+            app.UseExceptionHandler("/errors/500");
+
             app.UseSwagger();
             app.UseSwaggerUI(c => 
             {
