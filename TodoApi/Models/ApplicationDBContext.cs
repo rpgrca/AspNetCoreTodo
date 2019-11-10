@@ -14,5 +14,6 @@ namespace TodoApi.Models {
         }*/
 
         public DbSet<TodoItem> TodoItems { set; get; }
+        public DbSet<Group> Groups { set; get; }
     }
 }
