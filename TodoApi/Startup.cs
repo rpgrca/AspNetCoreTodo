@@ -109,7 +109,7 @@ namespace TodoApi
 
             app.UseHttpsRedirection();
 
-            app.UseExceptionHandler("/errors/500");
+            //app.UseExceptionHandler("/errors/500");
 
             app.UseSwagger();
             app.UseSwaggerUI(c => 
