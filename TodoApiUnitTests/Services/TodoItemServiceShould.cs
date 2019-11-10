@@ -31,7 +31,7 @@ namespace TodoApi.UnitTests.Services
         private static IMapper GetMapper() {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new SimpleMapping());
+                cfg.AddProfile(new SimpleTodoItemMapping());
             }).CreateMapper();
         }
 
