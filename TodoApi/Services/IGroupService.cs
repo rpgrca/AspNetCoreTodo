@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 using TodoApi.DTO;
 using Microsoft.AspNetCore.JsonPatch;

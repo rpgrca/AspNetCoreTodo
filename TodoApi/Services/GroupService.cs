@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using TodoApi.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using TodoApi.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;

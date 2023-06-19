@@ -1,20 +1,21 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
+using TodoApi.Services;
+using TodoApi.Swagger.OperationFilters;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TodoApi.Services;
-using Microsoft.AspNetCore.Identity;
-using TodoApi.Swagger.OperationFilters;
 
 namespace TodoApi
 {
@@ -47,7 +48,10 @@ namespace TodoApi
             services.AddScoped<ITodoItemService, TodoItemService>();
             //services.AddScoped<ITodoRepository, TodoRepository>(); TODO: Implementacion de Repository Pattern
  
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            /*services.AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);*/
+
+            services.AddControllers();
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -88,7 +92,7 @@ namespace TodoApi
        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -106,7 +110,6 @@ namespace TodoApi
                 .AllowAnyHeader());*/
 
             app.UseAuthentication();
-
             app.UseHttpsRedirection();
 
             //app.UseExceptionHandler("/errors/500");
@@ -117,7 +120,11 @@ namespace TodoApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
-            app.UseMvc();
+
+            app.UseRouting();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }
