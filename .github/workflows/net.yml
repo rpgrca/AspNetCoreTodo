@@ -1,0 +1,50 @@
+name: Build NET Core
+
+on:
+  push:
+    branches: [ matser ]
+  pull_request:
+    branches: [ matser ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Restore packages
+      run: |
+           dotnet restore
+           for s in TodoApi AspNetCoreTodo; do
+               dotnet restore $s/$s.sln
+           done
+
+    - name: Install Coverlet
+      run: dotnet tool install --global coverlet.console
+
+    - name: Build solutions
+      run: |
+           dotnet build --configuration Debug --no-restore /p:DefineConstants="CI_CONTEXT"
+           for s in TodoApi AspNetCoreTodo; do
+               dotnet build --configuration Debug --no-restore $s/$s.sln /p:DefineConstants="CI_CONTEXT"
+           done
+
+    - name: Testing
+      run: |
+           coverlet AspNetCoreTodoTest/bin/Debug/net7.0/AspNetCoreTodoTest.dll --target "dotnet" --targetargs "test AspNetCoreTodoTest/AspNetCoreTodoTest.csproj --no-build --verbosity quiet" --format OpenCover --output aspnetcoretodo.coverage.xml
+
+    - name: Upload coverage to CodeCov
+      run: bash <(curl -s https://codecov.io/bash)
+
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-report
+        path: ./*.coverage.xml
