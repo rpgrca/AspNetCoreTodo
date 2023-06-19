@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 using AspNetCoreTodo.Services;
 using AspNetCoreTodo.Models;
 using AspNetCoreTodo.Data;
