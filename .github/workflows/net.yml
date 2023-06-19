@@ -2,9 +2,9 @@ name: Build NET Core
 
 on:
   push:
-    branches: [ matser ]
+    branches: [ master ]
   pull_request:
-    branches: [ matser ]
+    branches: [ master ]
 
 jobs:
   build:
