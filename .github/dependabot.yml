@@ -1,0 +1,44 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/AspNetCoreTodo"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/AspNetCoreTodoTest"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/AspNetCoreTodo.IntegrationTests"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/TodoApi"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/TodoApiUnitTests"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "nuget"
+    directory: "/TodoApi.IntegrationTests"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
