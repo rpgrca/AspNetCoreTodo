@@ -21,7 +21,6 @@ jobs:
 
     - name: Restore packages
       run: |
-           dotnet restore
            for s in TodoApi AspNetCoreTodo; do
                dotnet restore $s/$s.sln
            done
