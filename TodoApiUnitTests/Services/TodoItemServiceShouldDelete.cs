@@ -83,14 +83,11 @@ namespace TodoApi.UnitTests.Services
 
             using (var context = new ApplicationDbContext(options))
             {
-                List<Task> tasks = new List<Task>();
-
                 foreach (var todoItem in todoItems)
                 {
-                    tasks.Add(context.TodoItems.AddAsync(todoItem));
+                    context.TodoItems.Add(todoItem);
                 }
 
-                await Task.WhenAll(tasks);
                 await context.SaveChangesAsync();
             }
 
