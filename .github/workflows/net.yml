@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  NET_DIRECTORY: net8.0
+
 jobs:
   build:
 
@@ -36,7 +39,7 @@ jobs:
 
     - name: Testing
       run: |
-           coverlet AspNetCoreTodoTest/bin/Debug/net7.0/AspNetCoreTodoTest.dll --target "dotnet" --targetargs "test AspNetCoreTodoTest/AspNetCoreTodoTest.csproj --no-build --verbosity quiet" --format OpenCover --output aspnetcoretodo.coverage.xml
+           coverlet AspNetCoreTodoTest/bin/Debug/${{ env.NET_DIRECTORY }}/AspNetCoreTodoTest.dll --target "dotnet" --targetargs "test AspNetCoreTodoTest/AspNetCoreTodoTest.csproj --no-build --verbosity quiet" --format OpenCover --output aspnetcoretodo.coverage.xml
 
     - name: Upload coverage to CodeCov
       run: bash <(curl -s https://codecov.io/bash)
