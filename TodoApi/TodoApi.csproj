@@ -12,9 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SQlite" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SQlite" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
