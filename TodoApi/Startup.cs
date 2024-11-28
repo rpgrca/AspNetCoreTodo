@@ -89,7 +89,7 @@ namespace TodoApi
                     };
                 });
 
-       }
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -122,6 +122,7 @@ namespace TodoApi
             });
 
             app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
