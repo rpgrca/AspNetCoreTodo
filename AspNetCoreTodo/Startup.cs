@@ -72,8 +72,8 @@ namespace AspNetCoreTodo
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
             app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
