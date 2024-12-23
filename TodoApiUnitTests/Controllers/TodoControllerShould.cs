@@ -51,7 +51,7 @@ namespace TodoApi.UnitTests.Services
             // Arrange
             var mockService = new Mock<ITodoItemService>();
             mockService.Setup(service => service.GetTodoItemAsync(1))
-                       .ReturnsAsync((TodoItemDTO)null);
+                .Throws(() => new ArgumentException());
 
             var controller = new TodoController(mockService.Object);
 
