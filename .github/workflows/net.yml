@@ -42,7 +42,7 @@ jobs:
            coverlet AspNetCoreTodoTest/bin/Debug/${{ env.NET_DIRECTORY }}/AspNetCoreTodoTest.dll --target "dotnet" --targetargs "test AspNetCoreTodoTest/AspNetCoreTodoTest.csproj --no-build --verbosity quiet" --format OpenCover --output aspnetcoretodo.coverage.xml
 
     - name: Upload coverage to CodeCov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 

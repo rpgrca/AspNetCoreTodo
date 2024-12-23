@@ -46,8 +46,7 @@ namespace TodoApi.Controllers
             }
             else
             {
-                return Ok(new ErrorMessage("Invalid credentials"));
-                //throw new ApplicationException("Invalid Login");
+                throw new ApplicationException("Invalid Login");
             }
         }
 

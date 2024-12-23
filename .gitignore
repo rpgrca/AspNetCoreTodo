@@ -1,3 +1,6 @@
 .vscode
 obj
 bin
+.vs
+*~
+*.DotSettings.user
