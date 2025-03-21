@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "axios": "^1.8.3",
+    "axios": "^1.8.4",
     "create-component": "^0.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
