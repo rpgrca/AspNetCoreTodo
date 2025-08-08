@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SQlite" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SQlite" Version="9.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
