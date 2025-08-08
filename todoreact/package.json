@@ -7,7 +7,7 @@
     "axios": "^1.11.0",
     "create-component": "^0.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.1.1",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
